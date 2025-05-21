@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KACCIMA - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">
+                <span class="logo-text">KACCIMA</span>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-form">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email or Username</label>
+                    <input type="text" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <div class="auth-links">
+                <a href="#">Forgot password?</a>
+                <p>Don't have an account? <a href="register.html">Register</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+            <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
+        </div>
+    </footer>
+   <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const emailInput = document.getElementById('loginEmail').value.trim();
+        const passwordInput = document.getElementById('loginPassword').value;
+
+        // Retrieve stored registration data
+        const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+
+        if (!storedData) {
+            alert("No registration data found. Please register first.");
+            return;
+        }
+
+        if (
+            storedData.email.toLowerCase() === emailInput.toLowerCase() &&
+            storedData.password === passwordInput
+        ) {
+            alert("Login successful!");
+            // Redirect to dashboard or member area
+            window.location.href = 'dashboard.html'; // Replace with your actual destination
+        } else {
+            alert("Invalid email or password. Please try again.");
+        }
+    });
+</script>
+
+</body>
+</html>

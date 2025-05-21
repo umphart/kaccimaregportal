@@ -1,0 +1,132 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KACCIMA - Membership Payment</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .payment-option { display: none; }
+    .payment-option.active { display: block; }
+    .payment-tabs { margin-top: 20px; }
+    .tab-btn.active { background-color: #007BFF; color: white; }
+    .tab-btn { margin-right: 10px; padding: 10px 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40"/>
+        <span class="logo-text">KACCIMA</span>
+      </div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="payment-container">
+    <div class="payment-methods">
+      <h2>Membership Payment</h2>
+      <p class="fee">Fee: N20,000</p>
+      <h3>Payment Methods</h3>
+
+      <!-- Bank Transfer Option -->
+      <div class="payment-option active" id="bankTransferOption">
+        <h4>Bank Transfer</h4>
+        <p>Account Number: 1234567890</p>
+        <p>Bank: KACCIMA Bank</p>
+        <p>Name: KACCIMA Membership</p>
+        <div class="upload-receipt">
+          <label>Upload Receipt</label>
+          <input type="file" id="receiptUpload"/>
+        </div>
+        <button class="btn" id="proceedBankTransfer">Proceed</button>
+      </div>
+
+      <!-- Remita Payment Option -->
+      <div class="payment-option" id="remitaPaymentOption">
+        <h4>Pay with Remita</h4>
+        <p>Click the button below to generate RRR and proceed to Remita.</p>
+        <button class="btn" id="payWithRemita">Pay with Remita</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="payment-tabs">
+        <button class="tab-btn active" data-target="bankTransferOption">Bank Transfer</button>
+        <button class="tab-btn" data-target="remitaPaymentOption">Remita</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+      <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching logic
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+      });
+    });
+
+    // Handle Bank Transfer Submission
+    document.getElementById('proceedBankTransfer').addEventListener('click', function () {
+      const receiptInput = document.getElementById('receiptUpload');
+      const receipt = receiptInput?.files[0];
+
+      if (!receipt) {
+        alert("Please upload your payment receipt.");
+        return;
+      }
+
+      try {
+        const registrationData = JSON.parse(localStorage.getItem('registrationData')) || {};
+        registrationData.receipt = receipt.name;
+        localStorage.setItem('registrationData', JSON.stringify(registrationData));
+
+        alert("Payment via Bank Transfer recorded successfully!");
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error("Error saving data:", error);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+
+    // Simulate Remita Payment (Mock)
+    document.getElementById('payWithRemita').addEventListener('click', function () {
+      try {
+        const registrationData = JSON.parse(localStorage.getItem('registrationData')) || {};
+        const generatedRRR = 'RRR-' + Math.floor(Math.random() * 1000000000);
+        registrationData.remitaRRR = generatedRRR;
+
+        localStorage.setItem('registrationData', JSON.stringify(registrationData));
+
+        alert(`Redirecting to Remita...\nGenerated RRR: ${generatedRRR}`);
+        // Replace with actual Remita integration URL if available
+        window.open(`https://remita.net`, '_blank');
+
+        // Simulate return to site after Remita payment
+        setTimeout(() => {
+          alert("Payment via Remita simulated successfully.");
+          window.location.href = 'login.html';
+        }, 3000);
+      } catch (error) {
+        console.error("Remita Payment Error:", error);
+        alert("Something went wrong during Remita payment.");
+      }
+    });
+  </script>
+</body>
+</html>
