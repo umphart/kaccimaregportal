@@ -611,3 +611,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+      <div class="upload-receipt">
+          <label>Upload Receipt</label>
+          <input type="file" id="receiptUpload"/>
+        </div>

@@ -258,15 +258,42 @@
         </div>
     </footer>
 
-   <script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registrationForm');
     const steps = document.querySelectorAll('.form-step');
     let currentStep = 0;
 
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const passwordError = document.getElementById('passwordError');
+
+    const fileInputs = [
+        "coveringLetter", "memorandum", "registrationCert", "incorporationCert",
+        "premisesCert", "passportPhotos", "nationalId", "formC07"
+    ];
+
+    // Setup file input label updates
+    fileInputs.forEach(id => {
+        const input = document.getElementById(id);
+        const label = document.getElementById(`label-${id}`);
+        input.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                label.textContent = this.files.length === 1 ? this.files[0].name : `${this.files.length} files selected`;
+            } else {
+                label.textContent = "Choose file";
+            }
+        });
+    });
+
+    // Password match check
+    confirmPassword.addEventListener('input', function() {
+        passwordError.style.display = (password.value !== confirmPassword.value && confirmPassword.value.length > 0)
+            ? 'block' : 'none';
+    });
+
     showStep(currentStep);
 
-    // Step navigation
     document.querySelector('.next-step').addEventListener('click', function() {
         if (validateStep(currentStep)) {
             currentStep++;
@@ -274,27 +301,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    if (document.querySelector('.prev-step')) {
-        document.querySelector('.prev-step').addEventListener('click', function() {
+    const prevBtn = document.querySelector('.prev-step');
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
             currentStep--;
             showStep(currentStep);
         });
     }
 
-    // Password match check
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirmPassword');
-    const passwordError = document.getElementById('passwordError');
-
-    confirmPassword.addEventListener('input', function() {
-        if (password.value !== confirmPassword.value && confirmPassword.value.length > 0) {
-            passwordError.style.display = 'block';
-        } else {
-            passwordError.style.display = 'none';
-        }
-    });
-
-    // Form submission
+    // Submit Handler
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -303,7 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Build form data
         const formData = {
             companyName: document.getElementById('companyName').value,
             officeAddress: document.getElementById('officeAddress').value,
@@ -320,34 +334,45 @@ document.addEventListener('DOMContentLoaded', function() {
             contactPerson: document.getElementById('contactPerson').value,
             representative: document.getElementById('representative').value,
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            documents: {} // We'll add these below
+            password: password.value,
+            documents: {}
         };
 
-        // Store uploaded document details separately
         const uploadedDocuments = [
             { name: "Covering Letter", fileName: document.getElementById('coveringLetter')?.files[0]?.name || "", approved: false },
             { name: "Memorandum & Articles", fileName: document.getElementById('memorandum')?.files[0]?.name || "", approved: false },
             { name: "Business Name Certificate", fileName: document.getElementById('registrationCert')?.files[0]?.name || "", approved: false },
             { name: "Incorporation Certificate", fileName: document.getElementById('incorporationCert')?.files[0]?.name || "", approved: false },
             { name: "Business Premises Certificate", fileName: document.getElementById('premisesCert')?.files[0]?.name || "", approved: false },
-            { name: "Passport Photos (2)", fileName: document.getElementById('passportPhotos')?.files[0]?.name || "", approved: false },
             { name: "Form C07", fileName: document.getElementById('formC07')?.files[0]?.name || "", approved: false },
             { name: "ID Document", fileName: document.getElementById('nationalId')?.files[0]?.name || "", approved: false }
         ];
 
-        localStorage.setItem('kaccimaUploadedDocuments', JSON.stringify(uploadedDocuments));
-
-        // Also store file names in formData for reference
         uploadedDocuments.forEach(doc => {
             formData.documents[doc.name] = doc.fileName;
         });
 
-        localStorage.setItem('kaccimaRegistration', JSON.stringify(formData));
+        // Handle passport photo (optional multiple)
+        const passportPhotoInput = document.getElementById('passportPhotos');
+        const passportFile = passportPhotoInput?.files[0];
 
-        // Redirect to payment
-        window.location.href = 'payment.html';
+        if (passportFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                formData.passportPhotoBase64 = e.target.result;
+                saveToLocalStorage(formData, uploadedDocuments);
+            };
+            reader.readAsDataURL(passportFile);
+        } else {
+            saveToLocalStorage(formData, uploadedDocuments);
+        }
     });
+
+    function saveToLocalStorage(formData, uploadedDocuments) {
+        localStorage.setItem('kaccimaRegistration', JSON.stringify(formData));
+        localStorage.setItem('kaccimaUploadedDocuments', JSON.stringify(uploadedDocuments));
+        window.location.href = 'payment.html';
+    }
 
     function showStep(stepIndex) {
         steps.forEach((step, index) => {
@@ -356,34 +381,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validateStep(stepIndex) {
-        // Add custom step validations if needed
+        // Placeholder for step-specific validations
         return true;
     }
 });
-    document.getElementById('nationalId').addEventListener('change', function () {
-        const label = document.getElementById('fileLabel');
-        label.textContent = this.files.length > 0 ? this.files[0].name : 'Choose file';
-    });
-    document.addEventListener('DOMContentLoaded', () => {
-    const fileInputs = [
-        "coveringLetter", "memorandum", "registrationCert", "incorporationCert",
-        "premisesCert", "passportPhotos", "nationalId", "formC07"
-    ];
-
-    fileInputs.forEach(id => {
-        const input = document.getElementById(id);
-        const label = document.getElementById(`label-${id}`);
-        
-        input.addEventListener('change', function () {
-            if (this.files.length > 0) {
-                label.textContent = this.files.length === 1 ? this.files[0].name : `${this.files.length} files selected`;
-            } else {
-                label.textContent = "Choose file";
-            }
-        });
-    });
-});
 </script>
+
 
 </body>
 </html>

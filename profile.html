@@ -40,7 +40,8 @@
                 
                 <!-- User Photo -->
                 <div class="photo-container">
-                    <img src="images/umar.JPG" alt="User Photo" class="profile-photo" width="70px" height="70px">
+                  <img id="passportPhoto" src="images/default-avatar.png" alt="User Photo" class="profile-photo" width="70px" height="70px">
+
                 </div>
 
                <div class="info-item">
@@ -89,6 +90,12 @@
     setField('contactPerson', storedData.contactPerson);
     setField('email', storedData.email);
     setField('officeAddress', storedData.officeAddress);
+
+    // Load passport photo if available
+    const passportImg = document.getElementById('passportPhoto');
+    if (storedData.passportPhotoBase64 && passportImg) {
+      passportImg.src = storedData.passportPhotoBase64;
+    }
   });
 </script>
 
