@@ -230,6 +230,7 @@ nav ul li a:hover {
     margin-bottom: 2rem;
 }
 
+
 .multi-step-form {
     position: relative;
 }
@@ -286,9 +287,11 @@ nav ul li a:hover {
 
 .form-navigation {
     display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+    gap: 10px; /* Adjust space between buttons if needed */
+    justify-content: flex-start; /* Aligns buttons to the left */
+    margin-top: 10px;
 }
+
 
 /* Payment Container */
 .payment-container {
