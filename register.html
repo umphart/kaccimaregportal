@@ -158,47 +158,89 @@
                 <h3>Upload Required Documents</h3>
                 
                 <div class="form-row">
-                    <div class="upload-group">
-                        <label for="coveringLetter">Covering letter (company letterhead)</label>
-                        <input type="file" id="coveringLetter" name="coveringLetter" required>
-                    </div>
-                    <div class="upload-group">
-                        <label for="memorandum">Memorandum & articles</label>
-                        <input type="file" id="memorandum" name="memorandum" required>
-                    </div>
-                </div>
+                   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-                <div class="form-row">
-                    <div class="upload-group">
-                        <label for="registrationCert">Business name certificate</label>
-                        <input type="file" id="registrationCert" name="registrationCert" required>
-                    </div>
-                    <div class="upload-group">
-                        <label for="incorporationCert">Incorporation certificate</label>
-                        <input type="file" id="incorporationCert" name="incorporationCert" required>
-                    </div>
-                </div>
+<div class="form-row">
+    <div class="upload-group">
+        <label for="coveringLetter" class="mui-label">Covering letter (company letterhead)</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-coveringLetter">Choose file</span>
+            <input type="file" id="coveringLetter" name="coveringLetter" required  accept=".pdf">
+        </div>
+    </div>
 
-                <div class="form-row">
-                    <div class="upload-group">
-                        <label for="premisesCert">Business premises certificate</label>
-                        <input type="file" id="premisesCert" name="premisesCert" required>
-                    </div>
-                    <div class="upload-group">
-                        <label for="passportPhotos">Passport photos (2)</label>
-                        <input type="file" id="passportPhotos" name="passportPhotos" multiple required>
-                    </div>
-                </div>
+    <div class="upload-group">
+        <label for="memorandum" class="mui-label">Memorandum & articles</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-memorandum">Choose file</span>
+            <input type="file" id="memorandum" name="memorandum" required  accept=".pdf">
+        </div>
+    </div>
+</div>
 
-                <div class="form-row">
-                    <div class="upload-group">
-                        <label for="formC07">Form C07</label>
-                        <input type="file" id="formC07" name="formC07" required>
-                    </div>
-                    <div class="upload-group">
-                        <label for="nationalId">ID Document</label>
-                        <input type="file" id="nationalId" name="nationalId" required>
-                    </div>
+<div class="form-row">
+    <div class="upload-group">
+        <label for="registrationCert" class="mui-label">Business name certificate</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-registrationCert">Choose file</span>
+            <input type="file" id="registrationCert" name="registrationCert" required accept=".pdf" >
+        </div>
+    </div>
+
+    <div class="upload-group">
+        <label for="incorporationCert" class="mui-label">Incorporation certificate</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-incorporationCert">Choose file</span>
+            <input type="file" id="incorporationCert" name="incorporationCert" required accept=".pdf">
+        </div>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="upload-group">
+        <label for="premisesCert" class="mui-label">Business premises certificate</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-premisesCert">Choose file</span>
+            <input type="file" id="premisesCert" name="premisesCert" required  accept=".pdf">
+        </div>
+    </div>
+
+    <div class="upload-group">
+        <label for="passportPhotos" class="mui-label">Passport photos</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-passportPhotos">Choose files</span>
+            <input type="file" id="passportPhotos" name="passportPhotos" multiple required accept=".jpg,.jpeg,.png">
+        </div>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="upload-group">
+        <label for="formC07" class="mui-label">Form C07</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+            <span class="file-label" id="label-formC07">Choose file</span>
+            <input type="file" id="formC07" name="formC07" required  accept=".pdf">
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="upload-group">
+        <label for="nationalId" class="mui-label">ID Document</label>
+        <div class="mui-file-upload">
+            <span class="material-icons">upload_file</span>
+        <span class="file-label" id="fileLabel">Choose file</span>
+        <input type="file" id="nationalId" name="nationalId" required  accept=".pdf">
+        </div>
+    </div>
+</div>
+
                 </div>
 
                 <div class="form-navigation">
@@ -317,6 +359,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add custom step validations if needed
         return true;
     }
+});
+    document.getElementById('nationalId').addEventListener('change', function () {
+        const label = document.getElementById('fileLabel');
+        label.textContent = this.files.length > 0 ? this.files[0].name : 'Choose file';
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+    const fileInputs = [
+        "coveringLetter", "memorandum", "registrationCert", "incorporationCert",
+        "premisesCert", "passportPhotos", "nationalId", "formC07"
+    ];
+
+    fileInputs.forEach(id => {
+        const input = document.getElementById(id);
+        const label = document.getElementById(`label-${id}`);
+        
+        input.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                label.textContent = this.files.length === 1 ? this.files[0].name : `${this.files.length} files selected`;
+            } else {
+                label.textContent = "Choose file";
+            }
+        });
+    });
 });
 </script>
 
