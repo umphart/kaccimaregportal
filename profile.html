@@ -4,7 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KACCIMA - Profile</title>
-    <link rel="stylesheet" href="styles.css">
+   <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .dashboard-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .profile-info {
+            max-width: 600px;
+            margin: auto;
+        }
+        .profile-photo {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
      <header>
