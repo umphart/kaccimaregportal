@@ -361,3 +361,75 @@ function closeModal() {
     document.getElementById('documentModal').style.display = 'none';
 }
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const registration = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+    const receiptFile = localStorage.getItem('receipt') || "payment_receipt.pdf"; // fallback
+    const paymentTableBody = document.getElementById('paymentVerificationsBody');
+
+    if (!registration || !paymentTableBody) return;
+
+    const paymentRow = document.createElement('tr');
+    paymentRow.innerHTML = `
+        <td>${registration.contactPerson}</td>
+        <td>₦150,000</td>
+        <td>Bank Transfer</td>
+        <td>${new Date().toLocaleDateString()}</td>
+        <td><span class="status-badge status-paid">Paid</span></td>
+        <td>
+            <button class="action-btn btn-view" onclick="viewDocument('${receiptFile}')">
+                <span class="material-icons">receipt</span> View
+            </button>
+            <button class="action-btn btn-verify">
+                <span class="material-icons">verified</span> Verify
+            </button>
+        </td>
+    `;
+    paymentTableBody.appendChild(paymentRow);
+});
+
+// Document modal logic
+function viewDocument(fileName) {
+    const modal = document.getElementById('documentModal');
+    const viewer = document.getElementById('documentViewer');
+    const title = document.getElementById('modalDocTitle');
+    modal.style.display = 'block';
+    title.textContent = fileName;
+    viewer.innerHTML = `<p>Preview of <strong>${fileName}</strong> would be shown here.</p>`;
+}
+
+function closeModal() {
+    document.getElementById('documentModal').style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded', function () {
+    const registration = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+    const receipt = localStorage.getItem('receipt');
+    const members = JSON.parse(localStorage.getItem('kaccimaMembers') || '[]');
+
+    // Simulate storing multiple members (optional setup for testing)
+    if (registration && !members.find(m => m.email === registration.email)) {
+        members.push(registration);
+        localStorage.setItem('kaccimaMembers', JSON.stringify(members));
+    }
+
+    // Update dashboard stats
+    document.getElementById('totalMembers').textContent = members.length;
+
+    // Assuming each unapproved registration = 1 pending approval
+    const pendingCount = members.length; // Adjust this logic as needed
+    document.getElementById('pendingApprovals').textContent = pendingCount;
+
+    // Fake payment total for demo - can store payments in localStorage if needed
+    const totalAmount = 150000; // Update this if tracking real payments
+    const recentAmount = receipt ? 150000 : 0;
+
+    document.getElementById('totalPayments').textContent = `₦${totalAmount.toLocaleString()}`;
+    document.getElementById('recentPayments').textContent = `₦${recentAmount.toLocaleString()}`;
+    const payments = JSON.parse(localStorage.getItem('kaccimaPayments') || '[]');
+ payments.push({ amount: 150000, method: 'Bank Transfer', date: new Date() });
+localStorage.setItem('kaccimaPayments', JSON.stringify(payments));
+
+});
+
+
+

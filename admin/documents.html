@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="logo.png" alt="Logo" class="sidebar-logo">
+                <h2 class="sidebar-title">Admin Dashboard</h2>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin.html" class="menu-item">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="members.html" class="menu-item">
+                    <span class="material-icons">groups</span>
+                    <span>Members</span>
+                </a>
+                <a href="payments.html" class="menu-item">
+                    <span class="material-icons">payments</span>
+                    <span>Payments</span>
+                </a>
+                <a href="documents.html" class="menu-item active">
+                    <span class="material-icons">description</span>
+                    <span>Documents</span>
+                </a>
+                <a href="report.html" class="menu-item">
+                    <span class="material-icons">assessment</span>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <span class="material-icons">settings</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Documents</h1>
+                <div class="search-box">
+                    <span class="material-icons">search</span>
+                    <input type="text" placeholder="Search documents..." id="searchDocuments">
+                </div>
+            </header>
+
+            <section class="documents-list">
+                <table id="documentsTable">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Uploaded By</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Document rows will be populated here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Sample data to simulate localStorage
+        const sampleDocuments = [
+            {
+                name: 'Covering Letter',
+                uploadedBy: 'John Doe',
+                date: '2024-04-20',
+                status: 'Pending'
+            },
+            {
+                name: 'Memorandum & Articles',
+                uploadedBy: 'Jane Smith',
+                date: '2024-04-10',
+                status: 'Pending'
+            },
+            {
+                name: 'Business Name Certificate',
+                uploadedBy: 'Michael Johnson',
+                date: '2024-04-17',
+                status: 'Pending'
+            },
+            {
+                name: 'Incorporation Certificate',
+                uploadedBy: 'Emily Brown',
+                date: '2024-04-15',
+                status: 'Pending'
+            }
+        ];
+
+        // Store sample data in localStorage
+        localStorage.setItem('documents', JSON.stringify(sampleDocuments));
+
+        // Function to populate the documents table
+        function populateDocumentsTable() {
+            const documents = JSON.parse(localStorage.getItem('documents'));
+            const tableBody = document.querySelector('#documentsTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            documents.forEach(doc => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${doc.name}</td>
+                    <td>${doc.uploadedBy}</td>
+                    <td>${doc.date}</td>
+                    <td><span class="status-badge status-${doc.status.toLowerCase()}">${doc.status}</span></td>
+                    <td>
+                        <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                            <span class="material-icons">visibility</span> View
+                        </button>
+                        <button class="action-btn btn-approve">
+                            <span class="material-icons">check</span> Approve
+                        </button>
+                        <button class="action-btn btn-reject">
+                            <span class="material-icons">close</span> Reject
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to handle document view action
+        function viewDocument(docName) {
+            alert(`Viewing document: ${docName}`);
+        }
+
+        // Initialize the table on page load
+        document.addEventListener('DOMContentLoaded', populateDocumentsTable);
+    </script>
+</body>
+</html>
