@@ -25,11 +25,66 @@
         }
 
         body {
-             background-image: url(images/bg4.jpg);
+            background-image: url(images/bg4.jpg);
             color: #333;
             line-height: 1.6;
             margin: 0;
             min-height: 100vh;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 60px); /* Subtract header height */
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #e9e9e9;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a .material-icons {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .sidebar ul li.active {
+            background-color: var(--primary-color);
+        }
+
+        .sidebar ul li.active a {
+            color: white;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: rgba(255,255,255,0.9);
         }
 
         /* Header Styles */
@@ -47,7 +102,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -266,7 +321,36 @@
         }
 
         /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .profile-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px 0;
+            }
+            
+            .sidebar ul {
+                display: flex;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .sidebar ul li {
+                padding: 10px 15px;
+            }
+            
             .profile-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -288,6 +372,27 @@
                 margin-left: 1rem;
             }
         }
+
+        @media (max-width: 576px) {
+            .documents-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .document-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .document-info {
+                margin: 10px 0;
+                text-align: center;
+            }
+            
+            .document-actions {
+                justify-content: center;
+                width: 100%;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -295,7 +400,7 @@
     <header>
         <nav>
             <div class="logo">
-                <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">
+                <a href="index.html"><img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40"></a>
                 <span class="logo-text">KACCIMA</span>
             </div>
             <ul>
@@ -307,203 +412,222 @@
         </nav>
     </header>
 
-    <main class="profile-container">
-        <div class="profile-header">
-            <div class="profile-title">
-                  <img id="passportPhoto" src="images/default-avatar.png" alt="User Photo" class="profile-photo" width="70px" height="70px"> 
-                <h1>Organization Profile</h1>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul>
+                <li><a href="dashboard.html"><span class="material-icons">dashboard</span> Dashboard</a></li>
+                <li class="active"><a href="organization-profile.html"><span class="material-icons">business</span> Organization Profile</a></li>
+                <li><a href="notification.html"><span class="material-icons">notifications</span> Notifications</a></li>
+                <li><a href="profile.html"><span class="material-icons">person</span> Personal Profile</a></li>
+                <li><a href="#"><span class="material-icons">description</span> Documents</a></li>
+                <li><a href="#"><span class="material-icons">payment</span> Payments</a></li>
+                <li><a href="#"><span class="material-icons">settings</span> Settings</a></li>
+                <li><a href="logout.html"><span class="material-icons">logout</span> Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-title">
+                        <img id="passportPhoto" src="images/default-avatar.png" alt="User Photo" class="profile-photo" width="70px" height="70px"> 
+                        <h1>Organization Profile</h1>
+                    </div>
+                    <button class="edit-btn" onclick="location.href='edit-profile.html'">
+                        <span class="material-icons">edit</span>
+                        Edit Profile
+                    </button>
+                </div>
+
+                <!-- Basic Information Section -->
+                <div class="profile-section">
+                    <h2 class="section-title">Basic Information</h2>
+                    <div class="profile-grid">
+                        <div class="profile-card">
+                            <div class="profile-field">
+                                <div class="field-label">Company Name</div>
+                                <div class="field-value" id="companyName">ABC Manufacturing Ltd.</div>
+                            </div>
+                            <div class="profile-field">
+                                <div class="field-label">Office Address</div>
+                                <div class="field-value" id="officeAddress">123 Industrial Area, Kano, Nigeria</div>
+                            </div>
+                            <div class="profile-field">
+                                <div class="field-label">Nature of Business</div>
+                                <div class="field-value" id="businessNature">Industry, Commerce</div>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-field">
+                                <div class="field-label">Contact Person</div>
+                                <div class="field-value" id="contactPerson">John Doe</div>
+                            </div>
+                            <div class="profile-field">
+                                <div class="field-label">Representative</div>
+                                <div class="field-value" id="representative">Jane Smith</div>
+                            </div>
+                            <div class="profile-field">
+                                <div class="field-label">Email Address</div>
+                                <div class="field-value" id="email">info@abcmanufacturing.com</div>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-field">
+                                <div class="field-label">Bankers</div>
+                                <div class="field-value" id="bankers">First Bank, Zenith Bank</div>
+                            </div>
+                            <div class="profile-field">
+                                <div class="field-label">Directors (Nigerian/Non-Nigerian)</div>
+                                <div class="field-value" id="directors">5 / 2</div>
+                            </div>
+                            <div class="profile-field">
+                                <div class="field-label">Employees (Nigerian/Non-Nigerian)</div>
+                                <div class="field-value" id="employees">120 / 5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Section -->
+                <div class="profile-section">
+                    <h2 class="section-title">Submitted Documents</h2>
+                    <div class="documents-list">
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Covering Letter</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Memorandum & Articles</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Business Name Certificate</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Incorporation Certificate</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Business Premises Certificate</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">image</span>
+                            <div class="document-info">
+                                <div class="document-name">Passport Photos (3)</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Form C07</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">badge</span>
+                            <div class="document-info">
+                                <div class="document-name">ID Document</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="action-btn" title="Download">
+                                    <span class="material-icons">download</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="edit-btn" onclick="location.href='edit-profile.html'">
-                <span class="material-icons">edit</span>
-                Edit Profile
-            </button>
-        </div>
-
-        <!-- Basic Information Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Basic Information</h2>
-            <div class="profile-grid">
-                <div class="profile-card">
-                    <div class="profile-field">
-                        <div class="field-label">Company Name</div>
-                        <div class="field-value" id="companyName">ABC Manufacturing Ltd.</div>
-                    </div>
-                    <div class="profile-field">
-                        <div class="field-label">Office Address</div>
-                        <div class="field-value" id="officeAddress">123 Industrial Area, Kano, Nigeria</div>
-                    </div>
-                    <div class="profile-field">
-                        <div class="field-label">Nature of Business</div>
-                        <div class="field-value" id="businessNature">Industry, Commerce</div>
-                    </div>
-                </div>
-
-                <div class="profile-card">
-                    <div class="profile-field">
-                        <div class="field-label">Contact Person</div>
-                        <div class="field-value" id="contactPerson">John Doe</div>
-                    </div>
-                    <div class="profile-field">
-                        <div class="field-label">Representative</div>
-                        <div class="field-value" id="representative">Jane Smith</div>
-                    </div>
-                    <div class="profile-field">
-                        <div class="field-label">Email Address</div>
-                        <div class="field-value" id="email">info@abcmanufacturing.com</div>
-                    </div>
-                </div>
-
-                <div class="profile-card">
-                    <div class="profile-field">
-                        <div class="field-label">Bankers</div>
-                        <div class="field-value" id="bankers">First Bank, Zenith Bank</div>
-                    </div>
-                    <div class="profile-field">
-                        <div class="field-label">Directors (Nigerian/Non-Nigerian)</div>
-                        <div class="field-value" id="directors">5 / 2</div>
-                    </div>
-                    <div class="profile-field">
-                        <div class="field-label">Employees (Nigerian/Non-Nigerian)</div>
-                        <div class="field-value" id="employees">120 / 5</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Documents Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Submitted Documents</h2>
-            <div class="documents-list">
-                <div class="document-item">
-                    <span class="material-icons document-icon">description</span>
-                    <div class="document-info">
-                        <div class="document-name">Covering Letter</div>
-                        <span class="document-status status-approved">Approved</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">description</span>
-                    <div class="document-info">
-                        <div class="document-name">Memorandum & Articles</div>
-                        <span class="document-status status-approved">Approved</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">description</span>
-                    <div class="document-info">
-                        <div class="document-name">Business Name Certificate</div>
-                        <span class="document-status status-approved">Approved</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">description</span>
-                    <div class="document-info">
-                        <div class="document-name">Incorporation Certificate</div>
-                        <span class="document-status status-pending">Pending Review</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">description</span>
-                    <div class="document-info">
-                        <div class="document-name">Business Premises Certificate</div>
-                        <span class="document-status status-pending">Pending Review</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">image</span>
-                    <div class="document-info">
-                        <div class="document-name">Passport Photos (3)</div>
-                        <span class="document-status status-approved">Approved</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">description</span>
-                    <div class="document-info">
-                        <div class="document-name">Form C07</div>
-                        <span class="document-status status-pending">Pending Review</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="document-item">
-                    <span class="material-icons document-icon">badge</span>
-                    <div class="document-info">
-                        <div class="document-name">ID Document</div>
-                        <span class="document-status status-approved">Approved</span>
-                    </div>
-                    <div class="document-actions">
-                        <button class="action-btn" title="View">
-                            <span class="material-icons">visibility</span>
-                        </button>
-                        <button class="action-btn" title="Download">
-                            <span class="material-icons">download</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -529,6 +653,11 @@
                 document.getElementById('bankers').textContent = storedData.bankers;
                 document.getElementById('directors').textContent = `${storedData.directors.nigerian} / ${storedData.directors.nonNigerian}`;
                 document.getElementById('employees').textContent = `${storedData.employees.nigerian} / ${storedData.employees.nonNigerian}`;
+                
+                // Load passport photo if available
+                if (storedData.passportPhotoBase64) {
+                    document.getElementById('passportPhoto').src = storedData.passportPhotoBase64;
+                }
             }
 
             if (storedDocs) {

@@ -4,8 +4,288 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KACCIMA - Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
-  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #15e420;
+      --primary-dark: #12c21e;
+      --secondary-color: #6c757d;
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --danger-color: #dc3545;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+      --white: #ffffff;
+      --border-radius: 5px;
+      --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: var(--white);
+      box-shadow: var(--box-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-text {
+      margin-left: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 2rem;
+    }
+
+    nav ul li a {
+      color: var(--dark-color);
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Dashboard Layout */
+    .dashboard-container {
+      display: flex;
+      min-height: calc(100vh - 60px);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background-color: var(--white);
+      padding: 20px 0;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+    }
+
+    .sidebar ul li {
+      padding: 12px 20px;
+      transition: all 0.3s;
+    }
+
+    .sidebar ul li:hover {
+      background-color: rgba(21, 228, 32, 0.1);
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: var(--dark-color);
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .sidebar ul li.active {
+      background-color: var(--primary-color);
+      border-left: 4px solid var(--primary-dark);
+    }
+
+    .sidebar ul li.active a {
+      color: var(--white);
+    }
+
+    .sidebar ul li .material-icons {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+    /* Main Content */
+    .dashboard-content {
+      flex-grow: 1;
+      padding: 20px;
+      background-color: var(--light-color);
+    }
+
+    /* Notification */
+    .notification {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+    }
+
+    .notification.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .notification.warning {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .notification .material-icons {
+      margin-right: 10px;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--box-shadow);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    /* Profile Info */
+    .profile-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .info-item {
+      margin-bottom: 15px;
+    }
+
+    .info-item .label {
+      font-weight: 600;
+      color: var(--secondary-color);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .info-item .value {
+      background-color: var(--light-color);
+      padding: 10px;
+      border-radius: var(--border-radius);
+    }
+
+    .info-item .value.active {
+      color: var(--success-color);
+      font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn.outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn.outline:hover {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      font-size: 14px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .dashboard-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        padding: 10px 0;
+      }
+      
+      .sidebar ul {
+        display: flex;
+        overflow-x: auto;
+      }
+      
+      .sidebar ul li {
+        flex: 0 0 auto;
+        padding: 10px 15px;
+        white-space: nowrap;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      .profile-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -18,6 +298,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
+        <li><a href="logout.html">Logout</a></li>
       </ul>
     </nav>
   </header>
@@ -25,35 +306,63 @@
   <main class="dashboard-container">
     <aside class="sidebar">
       <ul>
-        <li class="active"><a href="dashboard.html">Dashboard</a></li>
-        <li ><a href="organization-profile.html">organization-profile</a></li>
-        <li><a href="notification.html">Notifications</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="revewedDucuments.html">Documents</a></li>
+        <li class="active"><a href="dashboard.html"><span class="material-icons">dashboard</span> Dashboard</a></li>
+        <li><a href="organization-profile.html"><span class="material-icons">business</span> Organization Profile</a></li>
+        <li><a href="notification.html"><span class="material-icons">notifications</span> Notifications</a></li>
+        <li><a href="profile.html"><span class="material-icons">person</span> Personal Profile</a></li>
+        <li><a href="revewedDucuments.html"><span class="material-icons">description</span> Documents</a></li>
       </ul>
     </aside>
 
     <section class="dashboard-content">
-      <div class="notification success" id="paymentStatusContainer">
+      <div class="notification success">
+        <span class="material-icons">info</span>
         <p>Your payment status: <span id="paymentStatus">Pending</span></p>
       </div>
 
-      <div class="membership-status">
+      <div class="card membership-status">
         <h3>Membership Subscription</h3>
-        <p>Registration Date: <span id="registrationDate"></span></p>
-        <p>Expected Renewal Date: <span id="renewalDate"></span></p>
-        <p>Time left to renew: <span id="countdownTimer"></span></p>
+        <div class="info-item">
+          <span class="label">Registration Date:</span>
+          <span class="value" id="registrationDate"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Expected Renewal Date:</span>
+          <span class="value" id="renewalDate"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Time left to renew:</span>
+          <span class="value" id="countdownTimer"></span>
+        </div>
         <a href="payment.html" class="btn">Renew Payment</a>
       </div>
 
-      <div class="profile-info">
+      <div class="card profile-info">
         <h3>Profile Information</h3>
-        <div class="info-item"><span class="label">Company Name:</span><span class="value" id="companyName"></span></div>
-        <div class="info-item"><span class="label">Office Address:</span><span class="value" id="officeAddress"></span></div>
-        <div class="info-item"><span class="label">Business Nature:</span><span class="value" id="businessNature"></span></div>
-        <div class="info-item"><span class="label">Bankers:</span><span class="value" id="bankers"></span></div>
-        <div class="info-item"><span class="label">Email:</span><span class="value" id="email"></span></div>
-        <div class="info-item"><span class="label">Membership Status:</span><span class="value active">Active</span></div>
+        <div class="info-item">
+          <span class="label">Company Name:</span>
+          <span class="value" id="companyName"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Office Address:</span>
+          <span class="value" id="officeAddress"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Business Nature:</span>
+          <span class="value" id="businessNature"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Bankers:</span>
+          <span class="value" id="bankers"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Email:</span>
+          <span class="value" id="email"></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Membership Status:</span>
+          <span class="value active">Active</span>
+        </div>
         <button class="btn outline" id="editProfile">Edit Profile</button>
       </div>
     </section>
@@ -65,48 +374,71 @@
       <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
     </div>
   </footer>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
 
-    if (!storedData) return;
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
 
-    const setField = (id, value) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value || '';
-    };
+      if (!storedData) return;
 
-    setField('companyName', storedData.companyName);
-    setField('officeAddress', storedData.officeAddress);
-    setField('businessNature', Array.isArray(storedData.businessNature) ? storedData.businessNature.join(', ') : '');
-    setField('bankers', storedData.bankers);
-    setField('email', storedData.email);
-    setField('paymentStatus', storedData.paymentStatus || 'Pending');
+      // Set profile information
+      const setField = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value || '';
+      };
 
-    // Set dates
-    const regDate = storedData.registrationDate || new Date().toISOString();
-    const regDateObj = new Date(regDate);
-    const renewalDate = new Date(regDateObj);
-    renewalDate.setFullYear(regDateObj.getFullYear() + 1);
-
-    document.getElementById('registrationDate').textContent = regDateObj.toDateString();
-    document.getElementById('renewalDate').textContent = renewalDate.toDateString();
-
-    // Countdown
-    const countdownEl = document.getElementById('countdownTimer');
-    const interval = setInterval(() => {
-      const now = new Date();
-      const diff = renewalDate - now;
-      if (diff <= 0) {
-        countdownEl.textContent = 'Expired';
-        clearInterval(interval);
+      setField('companyName', storedData.companyName);
+      setField('officeAddress', storedData.officeAddress);
+      setField('businessNature', Array.isArray(storedData.businessNature) ? 
+        storedData.businessNature.join(', ') : '');
+      setField('bankers', storedData.bankers);
+      setField('email', storedData.email);
+      
+      // Set payment status
+      const paymentStatus = document.getElementById('paymentStatus');
+      if (storedData.paymentStatus === 'Approved') {
+        paymentStatus.textContent = 'Approved';
+        paymentStatus.style.color = 'var(--success-color)';
+        paymentStatus.style.fontWeight = '600';
       } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        countdownEl.textContent = `${days} day(s)`;
+        paymentStatus.textContent = 'Pending';
+        paymentStatus.style.color = 'var(--warning-color)';
       }
-    }, 1000);
-  });
-</script>
 
+      // Set dates
+      const regDate = storedData.registrationDate || new Date().toISOString();
+      const regDateObj = new Date(regDate);
+      const renewalDate = new Date(regDateObj);
+      renewalDate.setFullYear(regDateObj.getFullYear() + 1);
+
+      document.getElementById('registrationDate').textContent = regDateObj.toLocaleDateString();
+      document.getElementById('renewalDate').textContent = renewalDate.toLocaleDateString();
+
+      // Countdown timer
+      const countdownEl = document.getElementById('countdownTimer');
+      const updateCountdown = () => {
+        const now = new Date();
+        const diff = renewalDate - now;
+        
+        if (diff <= 0) {
+          countdownEl.textContent = 'Expired';
+          countdownEl.style.color = 'var(--danger-color)';
+          clearInterval(countdownInterval);
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          countdownEl.textContent = `${days} day(s)`;
+          countdownEl.style.color = days < 30 ? 'var(--warning-color)' : 'var(--success-color)';
+        }
+      };
+
+      updateCountdown();
+      const countdownInterval = setInterval(updateCountdown, 86400000); // Update daily
+
+      // Edit profile button
+      document.getElementById('editProfile').addEventListener('click', () => {
+        window.location.href = 'edit-profile.html';
+      });
+    });
+  </script>
 </body>
 </html>
